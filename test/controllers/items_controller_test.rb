@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class ItemsControllerTest < ActionDispatch::IntegrationTest
@@ -8,6 +10,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
 
   test "should get new" do
     get new_todo_item_url(@todo)
+
     assert_response :success
   end
 

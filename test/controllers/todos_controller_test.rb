@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class TodosControllerTest < ActionDispatch::IntegrationTest
@@ -7,11 +9,13 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
 
   test "should get index" do
     get todos_url
+
     assert_response :success
   end
 
   test "should get new" do
     get new_todo_url
+
     assert_response :success
   end
 
@@ -25,16 +29,19 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
 
   test "should show todo" do
     get todo_url(@todo)
+
     assert_response :success
   end
 
   test "should get edit" do
     get edit_todo_url(@todo)
+
     assert_response :success
   end
 
   test "should update todo" do
     patch todo_url(@todo), params: { todo: { name: @todo.name } }
+
     assert_redirected_to todo_url(@todo)
   end
 

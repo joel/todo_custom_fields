@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class ItemsController < ApplicationController
   include ActionView::RecordIdentifier
 
   before_action :set_todo
 
-  before_action :set_item, only: %i[ destroy ]
+  before_action :set_item, only: %i[destroy]
 
   # GET /items/new
   def new
@@ -40,17 +42,18 @@ class ItemsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_item
-      @item = @todo.items.find(params[:id])
-    end
 
-    def set_todo
-      @todo = Todo.find(params[:todo_id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_item
+    @item = @todo.items.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def item_params
-      params.require(:item).permit(:name, :todo_id)
-    end
+  def set_todo
+    @todo = Todo.find(params[:todo_id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def item_params
+    params.require(:item).permit(:name, :todo_id)
+  end
 end
