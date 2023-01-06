@@ -6,7 +6,13 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.2.0"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.0.4"
+if defined?(@rails_gem_requirement) && @rails_gem_requirement
+  # causes Dependabot to ignore the next line and update the next gem "rails"
+  rails = "rails"
+  gem rails, @rails_gem_requirement
+else
+  gem "rails", "~> 7.0"
+end
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"

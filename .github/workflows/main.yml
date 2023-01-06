@@ -1,0 +1,102 @@
+name: Tests
+
+on: [ push ]
+
+env:
+  DEFAULT_RUBY: 3.2.0
+  CI: true
+
+jobs:
+
+  lint:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      -
+        name: Checkout Source Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: '1'
+      -
+        name: Install ruby ${{ env.DEFAULT_RUBY }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.DEFAULT_RUBY }}
+      -
+        name: Run Lint
+        run: |
+          gem install rubocop
+          gem install rubocop-performance
+          gem install rubocop-rake
+          gem install rubocop-minitest
+          gem install rubocop-gitlab-security
+          gem install rubocop-rails
+          rubocop --parallel
+
+  system:
+
+    needs: lint
+
+    runs-on: ubuntu-latest
+
+    steps:
+      -
+        name: Checkout Source Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: '1'
+      -
+        name: Install ruby ${{ env.DEFAULT_RUBY }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.DEFAULT_RUBY }}
+          bundler-cache: true
+      -
+        name: Run System Tests
+        run: bin/rails test:system
+
+  ci:
+
+    needs: system
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: [3.2.0, head, debug] #, jruby, truffleruby]
+        gemfile: [Gemfile, gemfiles/rails_edge.gemfile]
+
+    env:
+      BUNDLE_GEMFILE: "${{ matrix.gemfile }}"
+      BUNDLE_WITHOUT: production
+      BUNDLE_JOBS: 3
+      BUNDLE_RETRY: 3
+
+    steps:
+      -
+        name: Checkout Source Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: '1'
+      -
+        name: Install ruby ${{ matrix.ruby }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      -
+        name: Set Bundle ${{ matrix.gemfile }}
+        run: |
+          gem update --system
+          gem install bundler
+      -
+        name: Bundle Install ${{ matrix.gemfile }}
+        run: |
+          bundle lock --add-platform x86_64-linux
+          bundle update # make sure it's tested with the last version of every libraries
+      -
+        name: Run Tests
+        run: |
+          echo $BUNDLE_GEMFILE
+          bundle exec rake
