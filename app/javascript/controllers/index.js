@@ -12,3 +12,6 @@ eagerLoadControllersFrom("controllers", application)
 
 import ResetForm from "./reset_form_controller"
 application.register("reset-form", ResetForm)
+
+import RemovalsController from './removals_controller.js';
+application.register('removals', RemovalsController);

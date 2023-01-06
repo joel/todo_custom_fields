@@ -2,41 +2,35 @@ require "application_system_test_case"
 
 class ItemsTest < ApplicationSystemTestCase
   setup do
-    @item = items(:one)
-  end
-
-  test "visiting the index" do
-    visit items_url
-    assert_selector "h1", text: "Items"
+    @todo = todos(:one)
+    @item = @todo.items.take
   end
 
   test "should create item" do
-    visit items_url
-    click_on "New item"
+    visit todo_url(@todo)
 
-    fill_in "Name", with: @item.name
-    fill_in "Todo", with: @item.todo_id
+    page.assert_selector('div.item', :count => 1)
+
+    fill_in "item[name]", with: @item.name
+
     click_on "Create Item"
 
-    assert_text "Item was successfully created"
+    page.assert_selector('div.item', :count => 2)
+
     click_on "Back"
   end
 
-  test "should update Item" do
-    visit item_url(@item)
-    click_on "Edit this item", match: :first
-
-    fill_in "Name", with: @item.name
-    fill_in "Todo", with: @item.todo_id
-    click_on "Update Item"
-
-    assert_text "Item was successfully updated"
-    click_on "Back"
-  end
 
   test "should destroy Item" do
-    visit item_url(@item)
+    visit todo_url(@todo)
+
+    page.assert_selector('div.item', :count => 1)
+
+    accept_alert do
     click_on "Destroy this item", match: :first
+    end
+
+    page.assert_selector('div.item', :count => 0)
 
     assert_text "Item was successfully destroyed"
   end

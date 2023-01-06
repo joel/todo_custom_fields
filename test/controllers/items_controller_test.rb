@@ -2,47 +2,28 @@ require "test_helper"
 
 class ItemsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @item = items(:one)
-  end
-
-  test "should get index" do
-    get items_url
-    assert_response :success
+    @todo = todos(:one)
+    @item = @todo.items.take
   end
 
   test "should get new" do
-    get new_item_url
+    get new_todo_item_url(@todo)
     assert_response :success
   end
 
   test "should create item" do
     assert_difference("Item.count") do
-      post items_url, params: { item: { name: @item.name, todo_id: @item.todo_id } }
+      post todo_items_url(@todo), params: { item: { name: @item.name, todo_id: @item.todo_id } }
     end
 
-    assert_redirected_to item_url(Item.last)
-  end
-
-  test "should show item" do
-    get item_url(@item)
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get edit_item_url(@item)
-    assert_response :success
-  end
-
-  test "should update item" do
-    patch item_url(@item), params: { item: { name: @item.name, todo_id: @item.todo_id } }
-    assert_redirected_to item_url(@item)
+    assert_redirected_to todo_item_url(@todo, Item.last)
   end
 
   test "should destroy item" do
     assert_difference("Item.count", -1) do
-      delete item_url(@item)
+      delete todo_item_url(@todo, @item)
     end
 
-    assert_redirected_to items_url
+    assert_redirected_to todo_items_url(@todo)
   end
 end

@@ -3,15 +3,11 @@ class ItemsController < ApplicationController
 
   before_action :set_todo
 
-  before_action :set_item, only: %i[ show edit update destroy ]
+  before_action :set_item, only: %i[ destroy ]
 
   # GET /items/new
   def new
     @item = @todo.items.new
-  end
-
-  # GET /items/1/edit
-  def edit
   end
 
   # POST /items or /items.json
@@ -20,24 +16,11 @@ class ItemsController < ApplicationController
 
     respond_to do |format|
       if @item.save
-        format.html { redirect_to item_url(@item), notice: "Item was successfully created." }
+        format.html { redirect_to todo_item_url(@todo, @item), notice: "Item was successfully created." }
         format.json { render :show, status: :created, location: @item }
-        format.turbo_stream
+        format.turbo_stream { flash.now[:notice] = "Item was successfully created." }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /items/1 or /items/1.json
-  def update
-    respond_to do |format|
-      if @item.update(item_params)
-        format.html { redirect_to item_url(@item), notice: "Item was successfully updated." }
-        format.json { render :show, status: :ok, location: @item }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @item.errors, status: :unprocessable_entity }
       end
     end
@@ -48,9 +31,11 @@ class ItemsController < ApplicationController
     @item.destroy
 
     respond_to do |format|
-      format.html { redirect_to items_url, notice: "Item was successfully destroyed." }
+      format.html { redirect_to todo_items_url(@todo), notice: "Item was successfully destroyed." }
       format.json { head :no_content }
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(dom_id(@item))}
+      format.turbo_stream do
+        flash.now[:notice] = "Item was successfully destroyed."
+      end
     end
   end
 
