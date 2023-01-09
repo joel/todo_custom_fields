@@ -12,7 +12,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 20_230_106_115_237) do
+ActiveRecord::Schema[7.0].define(version: 20_230_109_113_312) do
+  create_table "fields", force: :cascade do |t|
+    t.string "name"
+    t.string "content"
+    t.json "metadata"
+    t.string "source_type"
+    t.integer "source_id"
+    t.string "target_type"
+    t.integer "target_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index %w[source_type source_id], name: "index_fields_on_source"
+    t.index %w[target_type target_id], name: "index_fields_on_target"
+  end
+
   create_table "items", force: :cascade do |t|
     t.string "name"
     t.integer "todo_id", null: false

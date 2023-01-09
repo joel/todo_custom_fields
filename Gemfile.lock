@@ -68,6 +68,7 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
+    ansi (1.5.0)
     ast (2.4.2)
     bindex (0.8.1)
     bootsnap (1.15.0)
@@ -89,6 +90,12 @@ GEM
       irb (>= 1.5.0)
       reline (>= 0.3.1)
     erubi (1.12.0)
+    factory_bot (6.2.1)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.2.0)
+      factory_bot (~> 6.2.0)
+      railties (>= 5.0.0)
+    ffaker (2.21.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
     i18n (1.12.0)
@@ -117,6 +124,11 @@ GEM
     mini_mime (1.1.2)
     mini_portile2 (2.8.1)
     minitest (5.17.0)
+    minitest-reporters (1.5.0)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
     msgpack (1.6.0)
     net-imap (0.3.4)
       date
@@ -173,6 +185,7 @@ GEM
     reline (0.3.2)
       io-console (~> 0.5)
     rexml (3.2.5)
+    rr (3.1.0)
     rubocop (1.42.0)
       json (~> 2.3)
       parallel (~> 1.10)
@@ -204,6 +217,12 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    shoulda (4.0.0)
+      shoulda-context (~> 2.0)
+      shoulda-matchers (~> 4.0)
+    shoulda-context (2.0.0)
+    shoulda-matchers (4.5.1)
+      activesupport (>= 4.2.0)
     sprockets (4.2.0)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -253,10 +272,14 @@ DEPENDENCIES
   bootsnap
   capybara
   debug
+  factory_bot_rails
+  ffaker
   importmap-rails
   jbuilder
+  minitest-reporters
   puma (~> 5.0)
   rails (~> 7.0)
+  rr
   rubocop
   rubocop-gitlab-security
   rubocop-minitest
@@ -264,6 +287,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rake
   selenium-webdriver
+  shoulda
   sprockets-rails
   sqlite3 (~> 1.4)
   stimulus-rails
