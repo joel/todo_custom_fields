@@ -95,6 +95,7 @@ jobs:
         run: |
           bundle lock --add-platform x86_64-linux
           bundle update # make sure it's tested with the last version of every libraries
+          bundle exec rake assets:precompile
       -
         name: Run Tests
         run: |
