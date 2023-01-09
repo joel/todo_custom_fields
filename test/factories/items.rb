@@ -2,6 +2,10 @@
 
 FactoryBot.define do
   factory :item do
-    name { "MyString" }
+    name { FFaker::AnimalUS.common_name }
+
+    trait :with_todo do
+      association :todo, factory: :todo
+    end
   end
 end

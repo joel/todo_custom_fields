@@ -2,6 +2,7 @@
 
 Rails.application.routes.draw do
   resources :todos do
+    resources :fields
     resources :items
   end
 

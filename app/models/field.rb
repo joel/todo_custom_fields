@@ -2,6 +2,8 @@
 
 # Custom field model.
 class Field < ApplicationRecord
+  broadcasts_to :source
+
   validates :name, presence: true, length: { maximum: 255 }
 
   belongs_to :target, polymorphic: true, optional: true

@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :todo do
-    name { "MyString" }
+    name { FFaker::AnimalUS.common_name }
   end
 end

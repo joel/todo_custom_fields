@@ -10,14 +10,16 @@
 
     <%= content_tag :div, id: "items" do %>
       <%= render @todo.items %>
-      <%# render @todo.items, todo: @todo %> <%# "Heterogeneous collections" %>
-      <%# render partial: "items/item", collection: @todo.items, locals: { todo: @todo } %>
-      <%# @todo.items.each do |item| %>
-        <%# render partial: "items/item", locals: { item: item, todo: item } %>
-      <%# end %>
     <% end %>
 
     <%= turbo_frame_tag "new_item", src: new_todo_item_path(@todo) %>
+
+   <%= content_tag :div, id: "fields" do %>
+      <%= render @todo.fields %>
+    <% end %>
+
+    Add Custom Fields:
+    <%= turbo_frame_tag "new_field", src: new_todo_field_path(@todo) %>
 
     <%= link_to 'Edit this todo', edit_todo_path(@todo), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
     <div class="inline-block ml-2">
