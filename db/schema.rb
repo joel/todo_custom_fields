@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_09_113312) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_10_134624) do
+  create_table "field_associations", force: :cascade do |t|
+    t.integer "field_id", null: false
+    t.string "target_type", null: false
+    t.integer "target_id", null: false
+    t.string "value"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["field_id"], name: "index_field_associations_on_field_id"
+    t.index ["target_type", "target_id"], name: "index_field_associations_on_target"
+  end
+
   create_table "fields", force: :cascade do |t|
     t.string "name"
     t.json "metadata", default: {}
@@ -38,5 +50,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_09_113312) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "field_associations", "fields"
   add_foreign_key "items", "todos"
 end

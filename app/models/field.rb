@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Custom field model.
 class Field < ApplicationRecord
   broadcasts_to :source
 
