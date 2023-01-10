@@ -14,8 +14,11 @@ class ItemTest < ActiveSupport::TestCase
 
       position = 0
       @todo.fields.each do |field|
-        @item.field_associations.create(field:, position: position += 1,
-                                        value: "value - [#{field.name}] - #{rand(1000)}")
+        @item.field_associations.create(
+          field:,
+          position: position += 1,
+          value: "value - [#{field.name}] - #{rand(1000)}"
+        )
       end
 
       assert_equal @item.fields.count, @todo.fields.count

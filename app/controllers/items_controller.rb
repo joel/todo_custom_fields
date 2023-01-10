@@ -18,6 +18,16 @@ class ItemsController < ApplicationController
 
     respond_to do |format|
       if @item.save
+
+        position = 0
+        field_params.map do |name, value|
+          @item.field_associations.create(
+            field: @todo.fields.find_by(name:),
+            position: position += 1,
+            value:
+          )
+        end
+
         format.html { redirect_to todo_item_url(@todo, @item), notice: "Item was successfully created." }
         format.json { render :show, status: :created, location: @item }
         format.turbo_stream { flash.now[:notice] = "Item was successfully created." }
@@ -55,5 +65,11 @@ class ItemsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def item_params
     params.require(:item).permit(:name, :todo_id)
+  end
+
+  def field_params
+    params.require(:field).permit(**@todo.fields.pluck(:name).map(&:downcase).map(&:to_sym))
+  rescue ActionController::ParameterMissing
+    {}
   end
 end
