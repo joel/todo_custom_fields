@@ -4,7 +4,7 @@ require "test_helper"
 
 class ItemsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @todo = create(:todo, :with_items)
+    @todo = create(:todo, :with_items, :with_fields)
     @item = @todo.items.take
   end
 
@@ -16,7 +16,9 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create item" do
     assert_difference("Item.count") do
-      post todo_items_url(@todo), params: { item: { name: @item.name, todo_id: @item.todo_id } }
+      post todo_items_url(@todo),
+           params: { item: { name: @item.name, todo_id: @item.todo_id },
+                     fields: { @todo.fields.map(&:name).first => "foo" } }
     end
 
     assert_redirected_to todo_item_url(@todo, Item.last)

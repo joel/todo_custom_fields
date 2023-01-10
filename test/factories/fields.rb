@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :field do
-    name { FFaker::AnimalUS.common_name }
+    name { FFaker::Color.name }
 
     trait :with_source do
       association :source, factory: :todo

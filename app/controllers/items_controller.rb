@@ -20,9 +20,9 @@ class ItemsController < ApplicationController
       if @item.save
 
         position = 0
-        field_params.map do |name, value|
+        field_params.each do |key, value|
           @item.field_associations.create(
-            field: @todo.fields.find_by(name:),
+            field: @todo.fields.find_by(name: key),
             position: position += 1,
             value:
           )
@@ -68,7 +68,7 @@ class ItemsController < ApplicationController
   end
 
   def field_params
-    params.require(:field).permit(**@todo.fields.pluck(:name).map(&:downcase).map(&:to_sym))
+    params.require(:fields).permit(*@todo.fields.pluck(:name).map(&:downcase).map(&:to_sym))
   rescue ActionController::ParameterMissing
     {}
   end

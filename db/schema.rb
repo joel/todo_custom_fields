@@ -27,6 +27,7 @@ ActiveRecord::Schema[7.0].define(version: 20_230_110_134_624) do
 
   create_table "fields", force: :cascade do |t|
     t.string "name"
+    t.string "identifier"
     t.json "metadata", default: {}
     t.json "policy", default: {}
     t.integer "position", default: 0

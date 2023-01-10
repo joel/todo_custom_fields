@@ -1,8 +1,15 @@
 <div id="<%= dom_id item %>" class="item">
   <p class="my-5">
     <strong class="block font-medium mb-1">Item:</strong>
-    <%= item.name %>
+    <%= "#{item.name} (#{item.id})" %>
   </p>
+
+  <% item.field_associations.each do |field_association| %>
+    <p class="my-5">
+      <strong class="block font-medium mb-1"><%= field_association.field.name %>:</strong>
+      <%= field_association.value %>
+    </p>
+  <% end %>
 
   <%=
     link_to(
