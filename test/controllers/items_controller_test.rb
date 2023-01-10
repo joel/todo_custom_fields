@@ -4,7 +4,7 @@ require "test_helper"
 
 class ItemsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @todo = todos(:one)
+    @todo = create(:todo, :with_items)
     @item = @todo.items.take
   end
 

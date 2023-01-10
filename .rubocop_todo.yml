@@ -41,3 +41,7 @@ Rails/I18nLocaleTexts:
     - 'app/controllers/fields_controller.rb'
     - 'app/controllers/items_controller.rb'
     - 'app/controllers/todos_controller.rb'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'db/schema.rb'

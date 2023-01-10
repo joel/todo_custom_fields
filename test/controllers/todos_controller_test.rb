@@ -4,7 +4,7 @@ require "test_helper"
 
 class TodosControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @todo = todos(:one)
+    @todo = create(:todo)
   end
 
   test "should get index" do

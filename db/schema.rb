@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_10_134624) do
+ActiveRecord::Schema[7.0].define(version: 20_230_110_134_624) do
   create_table "field_associations", force: :cascade do |t|
     t.integer "field_id", null: false
     t.string "target_type", null: false
@@ -20,7 +22,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_10_134624) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["field_id"], name: "index_field_associations_on_field_id"
-    t.index ["target_type", "target_id"], name: "index_field_associations_on_target"
+    t.index %w[target_type target_id], name: "index_field_associations_on_target"
   end
 
   create_table "fields", force: :cascade do |t|
@@ -33,7 +35,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_10_134624) do
     t.string "field_type", default: "string"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["source_type", "source_id"], name: "index_fields_on_source"
+    t.index %w[source_type source_id], name: "index_fields_on_source"
   end
 
   create_table "items", force: :cascade do |t|
