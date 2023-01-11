@@ -10,6 +10,9 @@ class ItemsController < ApplicationController
   # GET /items/new
   def new
     @item = @todo.items.new
+    @todo.fields.each do |field|
+      @item.field_associations.build(field:)
+    end
   end
 
   # POST /items or /items.json
@@ -64,7 +67,7 @@ class ItemsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def item_params
-    params.require(:item).permit(:name, :todo_id)
+    params.require(:item).permit(:name, field_associations_attributes: %i[id field_id value _destroy])
   end
 
   def field_params

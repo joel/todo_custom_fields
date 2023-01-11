@@ -9,4 +9,10 @@ class Item < ApplicationRecord
   has_many :fields, through: :field_associations, source: :field
 
   validates :name, presence: true
+
+  accepts_nested_attributes_for :field_associations, allow_destroy: true, reject_if: :reject_field_associations
+
+  def reject_field_associations(_attributes)
+    false
+  end
 end
