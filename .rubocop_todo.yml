@@ -28,7 +28,6 @@ Metrics/BlockLength:
   Exclude:
     - 'db/schema.rb'
 
-
 # Offense count: 1
 # Configuration parameters: AllowedMethods, AllowedPatterns, IgnoredMethods.
 Metrics/CyclomaticComplexity:
