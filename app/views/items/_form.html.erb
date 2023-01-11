@@ -12,24 +12,14 @@
   <% end %>
 
   <div class="my-5">
-    <%= form.label :name %>
+    <%= form.label :name, "Item Name" %>
     <%= form.text_field :name, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
   <% @todo.fields.each do |field| %>
     <div class="my-5">
-      <%= form.label field.name %>
+      <%= form.label field.name, "Custom Field Value" %>
       <%= text_field_tag "fields[#{field.name.downcase}]", nil, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-    </div>
-  <% end %>
-
-  <% form.fields_for :setting do |setting_subform| %>
-    <div class="my-5">
-      <%= setting_subform.label :name %>
-      <%= setting_subform.text_field :name %>
-    </div>
-    <div class="my-5">
-      <%= setting_subform.check_box :_destroy %>
     </div>
   <% end %>
 

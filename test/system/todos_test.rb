@@ -4,7 +4,7 @@ require "application_system_test_case"
 
 class TodosTest < ApplicationSystemTestCase
   setup do
-    @todo = todos(:one)
+    @todo = create(:todo)
   end
 
   test "visiting the index" do
@@ -17,10 +17,23 @@ class TodosTest < ApplicationSystemTestCase
     visit todos_url
     click_on "New todo"
 
-    fill_in "Name", with: @todo.name
+    fill_in "Todo", with: @todo.name
+    fill_in "Setting", with: "A Setting"
     click_on "Create Todo"
 
     assert_text "Todo was successfully created"
+
+    click_on "Back"
+  end
+
+  test "should create custom fields" do
+    visit todo_url(@todo)
+
+    fill_in "Custom Field Name", with: @todo.name
+    click_on "Create Field"
+
+    assert_text "Field was successfully created"
+
     click_on "Back"
   end
 
@@ -28,7 +41,7 @@ class TodosTest < ApplicationSystemTestCase
     visit todo_url(@todo)
     click_on "Edit this todo", match: :first
 
-    fill_in "Name", with: @todo.name
+    fill_in "Todo", with: @todo.name
     click_on "Update Todo"
 
     assert_text "Todo was successfully updated"

@@ -4,20 +4,20 @@ require "application_system_test_case"
 
 class ItemsTest < ApplicationSystemTestCase
   setup do
-    @todo = todos(:one)
+    @todo = create(:todo, :with_items)
     @item = @todo.items.take
   end
 
   test "should create item" do
     visit todo_url(@todo)
 
-    page.assert_selector("div.item", count: 1)
+    page.assert_selector("div.item", count: 5)
 
-    fill_in "item[name]", with: @item.name
+    fill_in "item[name]", with: FFaker::Color.name
 
     click_on "Create Item"
 
-    page.assert_selector("div.item", count: 2)
+    page.assert_selector("div.item", count: 6)
 
     click_on "Back"
   end
@@ -25,13 +25,13 @@ class ItemsTest < ApplicationSystemTestCase
   test "should destroy Item" do
     visit todo_url(@todo)
 
-    page.assert_selector("div.item", count: 1)
+    page.assert_selector("div.item", count: 5)
 
     accept_alert do
       click_on "Destroy this item", match: :first
     end
 
-    page.assert_selector("div.item", count: 0)
+    page.assert_selector("div.item", count: 4)
 
     assert_text "Item was successfully destroyed"
   end

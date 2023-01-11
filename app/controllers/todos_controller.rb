@@ -14,10 +14,13 @@ class TodosController < ApplicationController
   # GET /todos/new
   def new
     @todo = Todo.new
+    @todo.settings.build(name: "foo")
   end
 
   # GET /todos/1/edit
-  def edit; end
+  def edit
+    @todo.settings.build(name: "foo")
+  end
 
   # POST /todos or /todos.json
   def create
