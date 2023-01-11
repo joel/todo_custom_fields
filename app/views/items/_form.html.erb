@@ -23,6 +23,16 @@
     </div>
   <% end %>
 
+  <% form.fields_for :setting do |setting_subform| %>
+    <div class="my-5">
+      <%= setting_subform.label :name %>
+      <%= setting_subform.text_field :name %>
+    </div>
+    <div class="my-5">
+      <%= setting_subform.check_box :_destroy %>
+    </div>
+  <% end %>
+
   <div class="inline">
     <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>

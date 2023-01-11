@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 20_230_110_134_624) do
+ActiveRecord::Schema[7.0].define(version: 20_230_111_143_319) do
   create_table "field_associations", force: :cascade do |t|
     t.integer "field_id", null: false
     t.string "target_type", null: false
@@ -47,6 +47,14 @@ ActiveRecord::Schema[7.0].define(version: 20_230_110_134_624) do
     t.index ["todo_id"], name: "index_items_on_todo_id"
   end
 
+  create_table "settings", force: :cascade do |t|
+    t.string "name"
+    t.integer "todo_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["todo_id"], name: "index_settings_on_todo_id"
+  end
+
   create_table "todos", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -55,4 +63,5 @@ ActiveRecord::Schema[7.0].define(version: 20_230_110_134_624) do
 
   add_foreign_key "field_associations", "fields"
   add_foreign_key "items", "todos"
+  add_foreign_key "settings", "todos"
 end

@@ -23,5 +23,15 @@ FactoryBot.define do
         create_list(:field, evaluator.fields_count, source: todo)
       end
     end
+
+    trait :with_settings do
+      transient do
+        settings_count { 5 }
+      end
+
+      after(:create) do |todo, evaluator|
+        create_list(:setting, evaluator.settings_count, todo:)
+      end
+    end
   end
 end
