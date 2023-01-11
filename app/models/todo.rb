@@ -13,4 +13,8 @@ class Todo < ApplicationRecord
   def reject_settings(_attributes)
     false
   end
+
+  # def settings_attributes=(attributes)
+  #   super
+  # end
 end
