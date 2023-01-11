@@ -16,12 +16,23 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create item" do
     assert_difference("Item.count") do
-      post todo_items_url(@todo),
-           params: { item: { name: @item.name, todo_id: @item.todo_id },
-                     fields: { @todo.fields.map(&:name).first => "foo" } }
+      post(
+        todo_items_url(@todo),
+        params: {
+          item: {
+            name: @item.name
+          },
+          fields: {
+            @todo.fields.map(&:identifier).first => "foo"
+          }
+        }
+      )
     end
 
     assert_redirected_to todo_item_url(@todo, Item.last)
+    assert_predicate Item.last.field_associations, :present?
+    assert_equal 1, Item.last.field_associations.count
+    assert_equal "foo", Item.last.field_associations.first.value
   end
 
   test "should destroy item" do

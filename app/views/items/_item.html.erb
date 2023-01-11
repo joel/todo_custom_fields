@@ -4,6 +4,8 @@
     <%= "#{item.name} (#{item.id})" %>
   </p>
 
+  <%= "item.field_associations: [#{item.field_associations.count}]" %>
+
   <% item.field_associations.each do |field_association| %>
     <p class="my-5">
       <strong class="block font-medium mb-1"><%= field_association.field.name %>:</strong>
