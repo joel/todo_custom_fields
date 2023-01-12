@@ -33,5 +33,15 @@ FactoryBot.define do
         create_list(:setting, evaluator.settings_count, todo:)
       end
     end
+
+    trait :with_field_associations do
+      with_fields
+
+      after(:create) do |todo, _evaluator|
+        todo.fields.each do |field|
+          create(:field_association, target: todo, field:)
+        end
+      end
+    end
   end
 end

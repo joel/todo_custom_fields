@@ -17,4 +17,8 @@ class Todo < ApplicationRecord
   # def settings_attributes=(attributes)
   #   super
   # end
+
+  def custom_fields
+    fields.pluck(:identifier).map(&:to_sym)
+  end
 end
