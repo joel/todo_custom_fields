@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class TodosController < ApplicationController
+  include Filtering
+  include Paginate
+
   before_action :set_todo, only: %i[show edit update destroy]
 
   # GET /todos or /todos.json
@@ -9,7 +12,20 @@ class TodosController < ApplicationController
   end
 
   # GET /todos/1 or /todos/1.json
-  def show; end
+  def show
+    @collections = Collections.new(@todo)
+    @filter      = Memoization.new(filter_params)
+
+    @filter.name_cont ||= @todo.items.first.name if @todo.items.any?
+
+    filter_params[:name_cont] ||= @todo.items.first.name if @todo.items.any?
+
+    filter(@todo.items, filter_params) do |filtered|
+      paginate(filtered.result) do |paginated|
+        @filtered_items = paginated
+      end
+    end
+  end
 
   # GET /todos/new
   def new
@@ -70,5 +86,11 @@ class TodosController < ApplicationController
   # Only allow a list of trusted parameters through.
   def todo_params
     params.require(:todo).permit(:name, settings_attributes: %i[id name _destroy])
+  end
+
+  def filter_params
+    return {} unless params.key?(:filter)
+
+    params.require(:filter).permit(*::Memoization::ACCESSORS)
   end
 end

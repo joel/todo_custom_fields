@@ -6,10 +6,17 @@
       <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
     <% end %>
 
+    <div class="mx-auto">
+      <%= form_for :filter, method: :get do |f| %>
+        <%= f.select :name_cont, @collections.names, include_blank: true %>
+        <%= f.submit %>
+      <% end %>
+    </div>
+
     <%= render @todo %>
 
     <%= content_tag :div, id: "items" do %>
-      <%= render @todo.items %>
+      <%= render @filtered_items %>
     <% end %>
 
     <%= turbo_frame_tag "new_item", src: new_todo_item_path(@todo) %>
