@@ -14,11 +14,11 @@ class TodosController < ApplicationController
   # GET /todos/1 or /todos/1.json
   def show
     @collections = Collections.new(@todo)
-    @filter      = Memoization.new(filter_params)
+    @filter      = Memoization.new(@todo, filter_params)
 
-    @filter.name_cont ||= @todo.items.first.name if @todo.items.any?
+    @filter.name_eq ||= @todo.items.first.name if @todo.items.any?
 
-    filter_params[:name_cont] ||= @todo.items.first.name if @todo.items.any?
+    filter_params[:name_eq] ||= @todo.items.first.name if @todo.items.any?
 
     filter(@todo.items, filter_params) do |filtered|
       paginate(filtered.result) do |paginated|
@@ -91,6 +91,6 @@ class TodosController < ApplicationController
   def filter_params
     return {} unless params.key?(:filter)
 
-    params.require(:filter).permit(*::Memoization::ACCESSORS)
+    params.require(:filter).permit(*@todo.filterable_fields)
   end
 end

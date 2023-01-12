@@ -9,13 +9,24 @@ class TodoTest < ActiveSupport::TestCase
     end
   end
 
-  context "#custom_fields" do
+  context "with custom fields" do
     setup do
-      @todo = create(:todo, :with_field_associations)
+      @todo = create(:todo)
+      field = create(:field, source: @todo, name: "Quantity")
+      item  = create(:item, todo: @todo, name: "Foo")
+      create(:field_association, target: item, field:, value: "1")
     end
 
-    should "return the custom fields" do
-      assert_equal @todo.fields.pluck(:identifier).map(&:to_sym), @todo.custom_fields
+    context "#custom_fields" do
+      should "return the custom fields" do
+        assert_equal [:quantity], @todo.custom_fields
+      end
+    end
+
+    context "#filterable_fields" do
+      should "return the custom fields" do
+        assert_equal %i[name_eq quantity_eq], @todo.filterable_fields
+      end
     end
   end
 end

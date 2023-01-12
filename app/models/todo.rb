@@ -21,4 +21,8 @@ class Todo < ApplicationRecord
   def custom_fields
     fields.pluck(:identifier).map(&:to_sym)
   end
+
+  def filterable_fields
+    [:name_eq, *fields.map(&:predicate).map(&:to_sym)]
+  end
 end

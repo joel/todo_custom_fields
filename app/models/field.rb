@@ -9,6 +9,14 @@ class Field < ApplicationRecord
 
   after_validation :set_identifier
 
+  def predicate
+    "#{identifier}_eq"
+  end
+
+  def collection_name
+    identifier.to_s.pluralize.to_sym
+  end
+
   private
 
   def set_identifier
