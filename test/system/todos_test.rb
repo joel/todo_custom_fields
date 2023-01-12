@@ -54,4 +54,22 @@ class TodosTest < ApplicationSystemTestCase
 
     assert_text "Todo was successfully destroyed"
   end
+
+  context "with items" do
+    setup do
+      @todo = create(:todo, :with_items)
+    end
+
+    should "should filter items" do
+      visit todo_url(@todo)
+
+      page.assert_selector("div.item", count: 5)
+
+      click_on "Save Filter"
+
+      page.assert_selector("div.item", count: 1)
+
+      click_on "Back"
+    end
+  end
 end
