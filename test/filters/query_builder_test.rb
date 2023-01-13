@@ -50,6 +50,21 @@ class QueryBuilderTest < ActiveSupport::TestCase
           QueryBuilder.new(@collection).query(conditions).to_sql
         )
       end
+
+      should "build the query without join table" do
+        conditions = {
+          name: "Foo"
+        }
+
+        sql = <<-SQL.squish
+          SELECT "items".* FROM "items" WHERE "items"."name" = 'Foo'
+        SQL
+
+        assert_equal(
+          sql,
+          QueryBuilder.new(@collection).query(conditions).to_sql
+        )
+      end
     end
   end
 end
