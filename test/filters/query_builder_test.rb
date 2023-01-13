@@ -21,7 +21,7 @@ class QueryBuilderTest < ActiveSupport::TestCase
       should "build the query with join table" do
         conditions = {
           name: "Foo",
-          field_associations: { value: "1" }
+          field_associations: { value: "1", field: { identifier: "quantity" } }
         }
 
         sql = <<-SQL.squish
@@ -42,7 +42,7 @@ class QueryBuilderTest < ActiveSupport::TestCase
           FROM "items"
           LEFT OUTER JOIN "field_associations" ON "field_associations"."target_type" = 'Item'
             AND "field_associations"."target_id" = "items"."id"
-          WHERE "items"."name" = 'Foo' AND "field_associations"."value" = '1'
+          WHERE "items"."name" = 'Foo' AND "field_associations"."value" = '1' AND "field"."identifier" = 'quantity'
         SQL
 
         assert_equal(
