@@ -25,7 +25,7 @@ class TodoTest < ActiveSupport::TestCase
 
     context "#filterable_fields" do
       should "return the custom fields" do
-        assert_equal %i[name_eq quantity_eq], @todo.filterable_fields
+        assert_equal %i[name quantity], @todo.filterable_fields
       end
     end
   end

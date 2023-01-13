@@ -10,7 +10,7 @@ class Field < ApplicationRecord
   after_validation :set_identifier
 
   def predicate
-    "#{identifier}_eq"
+    identifier
   end
 
   def collection_name

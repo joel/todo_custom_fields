@@ -16,12 +16,10 @@ class TodosController < ApplicationController
     @collections = Collections.new(@todo)
     @filter      = Memoization.new(@todo, filter_params)
 
-    @filter.name_eq ||= @todo.items.first.name if @todo.items.any?
+    @filter.name ||= { name: @todo.items.first.name }.to_json if @todo.items.any?
 
-    filter_params[:name_eq] ||= @todo.items.first.name if @todo.items.any?
-
-    filter(@todo.items, filter_params) do |filtered|
-      paginate(filtered.result) do |paginated|
+    filter(@todo.items, @filter.constraints) do |filtered|
+      paginate(filtered) do |paginated|
         @filtered_items = paginated
       end
     end

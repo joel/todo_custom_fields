@@ -8,7 +8,13 @@ class Collections
 
     todo.fields.each do |field|
       proxy.define_method field.identifier.to_s.pluralize do
-        Item.includes(:field_associations).where(todo:).where(field_associations: { field: }).pluck(:value)
+        Item.includes(field_associations: :field).where(todo:).where(field_associations: { field: }).map do |item|
+          value = item.field_associations.find_by(field:).value
+          [
+            value,
+            { field_associations: { value:, fields: { identifier: field.identifier } } }.to_json
+          ]
+        end
       end
     end
 
@@ -16,7 +22,14 @@ class Collections
   end
 
   def names
-    @names ||= with_default_option(todo.items.pluck(:name))
+    @names ||= with_default_option(
+      todo.items.map do |item|
+        [
+          item.name,
+          { name: item.name }.to_json
+        ]
+      end
+    )
   end
 
   delegate :custom_fields, to: :todo

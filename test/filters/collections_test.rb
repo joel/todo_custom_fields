@@ -19,7 +19,12 @@ class CollectionsTest < ActiveSupport::TestCase
       assert_respond_to collections, :names
       assert_respond_to collections, :quantities
 
-      assert_equal ["1"], collections.quantities
+      assert_equal(
+        [
+          ["1", { field_associations: { value: "1", fields: { identifier: "quantity" } } }.to_json]
+        ],
+        collections.quantities
+      )
 
       assert_equal [:quantity], collections.custom_fields
     end

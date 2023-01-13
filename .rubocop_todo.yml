@@ -27,6 +27,7 @@ Metrics/BlockLength:
   Max: 38
   Exclude:
     - 'db/schema.rb'
+    - 'test/filters/query_builder_test.rb'
 
 # Offense count: 1
 # Configuration parameters: AllowedMethods, AllowedPatterns, IgnoredMethods.
@@ -53,3 +54,7 @@ Rails/I18nLocaleTexts:
     - 'app/controllers/fields_controller.rb'
     - 'app/controllers/items_controller.rb'
     - 'app/controllers/todos_controller.rb'
+
+Lint/BinaryOperatorWithIdenticalOperands:
+  Exclude:
+    - 'app/filters/query_builder.rb'

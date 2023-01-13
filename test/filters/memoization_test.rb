@@ -11,19 +11,28 @@ class MemoizationTest < ActiveSupport::TestCase
 
       create(:field_association, target: item, field:, value: "1")
 
-      @memoization = Memoization.new(todo, name_eq: "bar")
+      @memoization = Memoization.new(todo, name: { "name" => "bar" }.to_json)
     end
 
     should "create the getter" do
-      assert_respond_to @memoization, :name_eq
-      assert_respond_to @memoization, :quantity_eq
+      assert_respond_to @memoization, :name
+      assert_respond_to @memoization, :quantity
     end
 
     should "return it as params" do
       assert_equal(
-        { name_eq: "bar", quantity_eq: nil },
+        { name: { "name" => "bar" }.to_json, quantity: nil },
         @memoization.to_params
       )
+    end
+
+    context "#constraints" do
+      should "return the constraints" do
+        assert_equal(
+          [{ "name" => "bar" }],
+          @memoization.constraints
+        )
+      end
     end
   end
 end

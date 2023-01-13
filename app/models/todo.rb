@@ -23,6 +23,6 @@ class Todo < ApplicationRecord
   end
 
   def filterable_fields
-    [:name_eq, *fields.map(&:predicate).map(&:to_sym)]
+    [:name, *fields.map(&:predicate).map(&:to_sym)]
   end
 end
