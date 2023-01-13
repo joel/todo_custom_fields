@@ -5,10 +5,19 @@ class QueryBuilder
     @collection = collection
   end
 
-  def query(criteria)
-    return collection if criteria.empty?
+  def query(constraints, operator: :any)
+    return collection if constraints.empty?
 
-    collection.includes(:field_associations).where(criteria)
+    scopes = constraints.map do |conditions|
+      collection.includes(field_associations: :field).where(conditions)
+    end
+
+    case operator
+    when :any
+      scopes.reduce(&:or)
+    when :all
+      scopes.reduce(&:merge)
+    end
   end
 
   private
