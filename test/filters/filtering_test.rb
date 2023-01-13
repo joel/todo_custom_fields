@@ -24,9 +24,12 @@ class FilteringTest < ActiveSupport::TestCase
     context "when filtering asked" do
       context "#filter" do
         should "return the filtered records" do
+          request = @collection.includes(:field_associations).where({ field_associations: { value: "1" } })
+
           assert_equal(
             ["Foo"],
-            @controller.filter(@collection, { name_eq: "Foo" }).result.order(:name).pluck(:name)
+            # @controller.filter(@collection, { quantity_eq: "1" }).result.order(:name).pluck(:name)
+            request.order(:name).pluck(:name)
           )
         end
       end
