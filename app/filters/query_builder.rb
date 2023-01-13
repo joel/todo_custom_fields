@@ -5,19 +5,16 @@ class QueryBuilder
     @collection = collection
   end
 
-  def query(constraints, operator: :any)
+  def query(constraints)
     return collection if constraints.empty?
 
-    scopes = constraints.map do |conditions|
-      collection.includes(field_associations: :field).where(conditions)
-    end
+    collection_ids = constraints.each_with_object([]) do |conditions, sub_sets|
+      sub_sets << collection.includes(field_associations: :field).where(conditions).pluck(:id)
 
-    case operator
-    when :any
-      scopes.reduce(&:or)
-    when :all
-      scopes.reduce(&:merge)
-    end
+      sub_sets << (sub_sets.pop & sub_sets.pop) if sub_sets.size == 2
+    end.flatten
+
+    collection.where(id: collection_ids)
   end
 
   private
