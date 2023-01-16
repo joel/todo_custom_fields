@@ -20,5 +20,7 @@ module TodoCustomFields
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.x.obfuscator.secret_key = "D\xF8\x06\xE4\xEA[\x1Exp\xAE<\xFB3\xAAl."
   end
 end

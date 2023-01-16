@@ -3,6 +3,7 @@
 class Collections
   def initialize(todo)
     @todo = todo
+    @obfuscator = Obfuscator.new
 
     proxy = Module.new
 
@@ -13,7 +14,7 @@ class Collections
             value = item.field_associations.find_by(field:).value
             [
               value,
-              { field_associations: { value:, fields: { identifier: field.identifier } } }.to_json
+              encrypt({ field_associations: { value:, fields: { identifier: field.identifier } } }.to_json)
             ]
           end
         )
@@ -28,17 +29,18 @@ class Collections
       todo.items.map do |item|
         [
           item.name,
-          { name: item.name }.to_json
+          encrypt({ name: item.name }.to_json)
         ]
       end
     )
   end
 
   delegate :custom_fields, to: :todo
+  delegate :encrypt, to: :obfuscator
 
   private
 
-  attr_reader :todo
+  attr_reader :todo, :obfuscator
 
   def with_default_option(items)
     [["Select…", nil], *items]

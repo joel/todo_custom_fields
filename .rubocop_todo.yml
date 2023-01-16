@@ -14,6 +14,7 @@ Layout/LineLength:
   Max: 198
   Exclude:
     - 'bin/bundle'
+    - 'test/filters/collections_test.rb'
 
 # Offense count: 2
 # Configuration parameters: AllowedMethods, AllowedPatterns, IgnoredMethods, CountRepeatedAttributes.
@@ -58,3 +59,7 @@ Rails/I18nLocaleTexts:
 Lint/BinaryOperatorWithIdenticalOperands:
   Exclude:
     - 'app/filters/query_builder.rb'
+
+Style/OpenStructUse:
+  Exclude:
+    - 'test/filters/memoization_test.rb'

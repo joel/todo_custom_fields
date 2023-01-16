@@ -3,13 +3,11 @@
 require "test_helper"
 
 class ObfuscatorTest < ActiveSupport::TestCase
-  setup do
-    @obfuscator = Obfuscator.new
-  end
-
   should "encrypt and decrytp message" do
     message = "Hello World"
 
-    assert_equal message, @obfuscator.decrypt(@obfuscator.encrypt(message))
+    5.times.each do
+      assert_equal message, Obfuscator.new.decrypt(Obfuscator.new.encrypt(message))
+    end
   end
 end

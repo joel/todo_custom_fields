@@ -25,14 +25,19 @@ class MemoizationTest < ActiveSupport::TestCase
         @memoization.to_params
       )
     end
+  end
 
-    context "#constraints" do
-      should "return the constraints" do
-        assert_equal(
-          [{ "name" => "bar" }],
-          @memoization.constraints
-        )
-      end
+  context "#constraints" do
+    setup do
+      @memoization = Memoization.new(OpenStruct.new(filterable_fields: []),
+                                     name: Obfuscator.new.encrypt({ "name" => "bar" }.to_json))
+    end
+
+    should "return the constraints" do
+      assert_equal(
+        [{ "name" => "bar" }],
+        @memoization.constraints
+      )
     end
   end
 end

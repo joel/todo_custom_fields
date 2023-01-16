@@ -4,11 +4,12 @@ class Memoization
   def initialize(object, filter_params = {})
     @object = object
     @filter_params = filter_params.to_h.symbolize_keys
+    @obfuscator = Obfuscator.new
 
     proxy = Module.new
 
     # Create the getters and setters for the custom fields
-    object.filterable_fields.each do |predicate|
+    filterable_fields.each do |predicate|
       proxy.define_method("#{predicate}=") do |value|
         instance_variable_set("@#{predicate}", value)
       end
@@ -43,11 +44,13 @@ class Memoization
 
   def constraints
     filter_params.values.select(&:present?).map do |constraints|
-      JSON.parse(constraints)
+      JSON.parse(decrypt(constraints))
     end
   end
 
   private
 
-  attr_reader :object, :filter_params
+  delegate :decrypt, to: :obfuscator
+
+  attr_reader :object, :filter_params, :obfuscator
 end
