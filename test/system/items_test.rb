@@ -13,7 +13,7 @@ class ItemsTest < ApplicationSystemTestCase
 
     page.assert_selector("div.item", count: 5)
 
-    fill_in "item[name]", with: FFaker::Color.name
+    fill_in "item_name", with: FFaker::Color.name
 
     click_on "Create Item"
 

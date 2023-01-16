@@ -16,7 +16,7 @@ class TodosController < ApplicationController
     @collections = Collections.new(@todo)
     @filter      = Memoization.new(@todo, filter_params)
 
-    @filter.name ||= { name: @todo.items.first.name }.to_json if @todo.items.any?
+    @filter.name ||= Obfuscator.new.encrypt({ name: @todo.items.first.name }.to_json) if @todo.items.any?
 
     filter(@todo.items, @filter.constraints) do |filtered|
       paginate(filtered) do |paginated|

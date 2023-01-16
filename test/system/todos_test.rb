@@ -60,7 +60,7 @@ class TodosTest < ApplicationSystemTestCase
       @todo = create(:todo, :with_items)
     end
 
-    should "should filter items" do
+    should "should filter items with the default one" do
       visit todo_url(@todo)
 
       page.assert_selector("div.item", count: 5)
