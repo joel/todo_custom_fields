@@ -48,6 +48,8 @@ Metrics/PerceivedComplexity:
 # Offense count: 1
 Minitest/MultipleAssertions:
   Max: 5
+  Exclude:
+    - 'test/controllers/items_controller_test.rb'
 
 # Offense count: 6
 Rails/I18nLocaleTexts:
