@@ -9,8 +9,10 @@
     <div class="rounded-lg py-3 px-5 bg-gray-100 border-solid border-2 border-black shadow-lg">
       <h1 class="text-3xl font-medium p-4 text-gray-100">Filter</h1>
       <%= form_for :filter, method: :get do |f| %>
+        <%= f.label :name, "Name", class: "font-medium" %>
         <%= f.select :name, @collections.names, options = {}, html_options = { class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" } %>
         <% @todo.fields.each do |field| %>
+          <%= f.label field.predicate, field.name, class: "font-medium" %>
           <%= f.select field.predicate, @collections.public_send(field.collection_name), options = {}, html_options = { class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium min-w-max" }  %>
         <% end %>
         <%= submit_tag "Filter", class: "mt-2 rounded-lg py-3 px-5 bg-gray-900 font-medium" %>

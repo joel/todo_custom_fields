@@ -16,7 +16,7 @@ class Collections
               value,
               encrypt({ field_associations: { value:, fields: { identifier: field.identifier } } }.to_json)
             ]
-          end
+          end.uniq(&:first)
         )
       end
     end
@@ -26,10 +26,10 @@ class Collections
 
   def names
     @names ||= with_default_option(
-      todo.items.map do |item|
+      todo.items.distinct(:name).order(:name).pluck(:name).map do |item_name|
         [
-          item.name,
-          encrypt({ name: item.name }.to_json)
+          item_name,
+          encrypt({ name: item_name }.to_json)
         ]
       end
     )
