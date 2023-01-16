@@ -1,10 +1,8 @@
-<div id="<%= dom_id item %>" class="item">
+<div id="<%= dom_id item %>" class="item rounded-lg my-5 py-3 px-5 bg-gray-100">
   <p class="my-5">
     <strong class="block font-medium mb-1">Item:</strong>
     <%= "#{item.name} (#{item.id})" %>
   </p>
-
-  <%= "item.field_associations: [#{item.field_associations.count}]" %>
 
   <% item.field_associations.each do |field_association| %>
     <p class="my-5">

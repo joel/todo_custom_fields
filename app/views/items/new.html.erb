@@ -2,7 +2,9 @@
   <h1 class="font-bold text-4xl">New item</h1>
 
   <%= turbo_frame_tag "new_item" do %>
-    <%= render "form", item: @item %>
+    <div class="rounded-lg py-3 px-5 bg-gray-100">
+      <%= render "form", item: @item %>
+    </div>
   <% end %>
 
   <%= link_to 'Back to items', todo_items_path(@todo), class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>

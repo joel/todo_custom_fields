@@ -21,7 +21,9 @@ class CollectionsTest < ActiveSupport::TestCase
 
       assert_equal(
         [
-          ["1", { field_associations: { value: "1", fields: { identifier: "quantity" } } }.to_json]
+          ["Select…", nil],
+          ["1", "{\"field_associations\":{\"value\":\"1\",\"fields\":{\"identifier\":\"quantity\"}}}"]
+
         ],
         collections.quantities
       )

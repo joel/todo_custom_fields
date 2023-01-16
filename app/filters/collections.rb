@@ -8,13 +8,15 @@ class Collections
 
     todo.fields.each do |field|
       proxy.define_method field.identifier.to_s.pluralize do
-        Item.includes(field_associations: :field).where(todo:).where(field_associations: { field: }).map do |item|
-          value = item.field_associations.find_by(field:).value
-          [
-            value,
-            { field_associations: { value:, fields: { identifier: field.identifier } } }.to_json
-          ]
-        end
+        with_default_option(
+          Item.includes(field_associations: :field).where(todo:).where(field_associations: { field: }).map do |item|
+            value = item.field_associations.find_by(field:).value
+            [
+              value,
+              { field_associations: { value:, fields: { identifier: field.identifier } } }.to_json
+            ]
+          end
+        )
       end
     end
 
