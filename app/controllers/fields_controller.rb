@@ -10,6 +10,11 @@ class FieldsController < ApplicationController
   def create
     @field = Field.create({ source: @todo }.merge(field_params.to_h))
 
+    @collections = Collections.new(@todo)
+    @filter      = Memoization.new(@todo, {})
+
+    @filter.name ||= Obfuscator.new.encrypt({ name: @todo.items.first.name }.to_json) if @todo.items.any?
+
     respond_to do |format|
       if @field.save
         format.html { redirect_to todo_url(@todo), notice: "Field was successfully created." }

@@ -1,1 +1,9 @@
-<%= turbo_stream.prepend "flash", partial: "layouts/flash" %>
+<%= turbo_stream.replace target="flash", partial: "layouts/flash" %>
+
+<%= turbo_stream.replace target="filter" do %>
+  <%= render partial: "todos/filter", locals: { filter: @filter, todo: @todo, collections: @collections } %>
+<% end %>
+
+<%= turbo_stream.replace target="new_item" do %>
+  <%= turbo_frame_tag "new_item", src: new_todo_item_path(@todo) %>
+<% end %>

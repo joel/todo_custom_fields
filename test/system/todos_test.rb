@@ -65,7 +65,7 @@ class TodosTest < ApplicationSystemTestCase
 
       page.assert_selector("div.item", count: 5)
 
-      click_on "Filter"
+      click_on "Apply"
 
       page.assert_selector("div.item", count: 1)
 

@@ -1,0 +1,23 @@
+<div class="rounded-lg py-3 px-5 bg-gray-100">
+
+  <%= form_for :filter, method: :get do |f| %>
+
+    <div class="flex flex-row justify-between">
+      <%= f.label :name, "Name", class: "font-small" %>
+      <%= f.select :name, collections.names, options = {}, html_options = { class: "rounded-lg px-5 bg-gray-100 font-small" } %>
+    </div>
+
+    <% todo.fields.each do |field| %>
+      <div class="flex flex-row justify-between">
+        <%= f.label field.predicate, field.name, class: "font-small" %>
+        <%= f.select field.predicate, collections.public_send(field.collection_name), options = {}, html_options = { class: "mt-2 rounded-lg px-5 bg-gray-100" }  %>
+      </div>
+    <% end %>
+
+    <div class="flex justify-end">
+      <%= submit_tag "Apply", class: "rounded-lg py-3 bg-gray-100 font-small hover:bg-black" %>
+    </div>
+
+  <% end %>
+
+</div>

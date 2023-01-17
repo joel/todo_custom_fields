@@ -1,25 +1,30 @@
 <div id="<%= dom_id item %>" class="item rounded-lg my-5 py-3 px-5 bg-gray-100">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Item:</strong>
-    <%= "#{item.name} (#{item.id})" %>
-  </p>
+  <div class="flex flex-row justify-between">
+    <div class="font-medium text-slate-800">
+      <%= item.name %>
+    </div>
+    <%=
+      link_to(
+        'Destroy this item',
+        todo_item_path(item.todo, item),
+        data: {
+          turbo_method: :delete,
+          turbo_confirm: "Are you sure?"
+        },
+        class: "rounded-lg font-medium"
+      )
+    %>
+  </div>
 
   <% item.field_associations.each do |field_association| %>
-    <p class="my-5">
-      <strong class="block font-medium mb-1"><%= field_association.field.name %>:</strong>
-      <%= field_association.value %>
-    </p>
+    <div class="flex flex-row justify-between">
+      <div class="font-sm text-slate-800">
+        <%= field_association.field.name %>
+      </div>
+      <div class="font-sm text-slate-800">
+        <%= field_association.value %>
+      </div>
+    </div>
   <% end %>
 
-  <%=
-    link_to(
-      'Destroy this item',
-      todo_item_path(item.todo, item),
-      data: {
-        turbo_method: :delete,
-        turbo_confirm: "Are you sure?"
-      },
-      class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium"
-    )
-  %>
 </div>
