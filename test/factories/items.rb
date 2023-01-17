@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :item do
     name { FFaker::AnimalUS.common_name }
 
-    trait :with_todo do
+    factory :item_with_todo do
       association :todo, factory: :todo
     end
   end

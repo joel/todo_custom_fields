@@ -7,5 +7,17 @@ FactoryBot.define do
     trait :with_source do
       association :source, factory: :todo
     end
+
+    factory :integer_field do
+      field_type { "integer" }
+    end
+
+    factory :date_field do
+      field_type { "integer" }
+    end
+
+    factory :boolean_field do
+      field_type { "integer" }
+    end
   end
 end
