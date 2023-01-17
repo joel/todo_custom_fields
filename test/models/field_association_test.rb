@@ -3,39 +3,50 @@
 require "test_helper"
 
 class FieldAssociationTest < ActiveSupport::TestCase
-  # context "with a string field" do
-  #   should "have a string value" do
-  #     field_association = create(:field_association, field: create(:field, field_type: "string"))
-  #     field_association.value = "Test"
+  context "with a string field" do
+    setup do
+      @field_association = build(:field_association)
+      @field_association.field = create(:field, field_type: "string")
+    end
 
-  #     assert_equal "Test", field_association.value
-  #     assert field_association.save
-  #     assert field_association.value.is_a?(String)
-  #   end
-  # end
+    should "be valid with a string value" do
+      @field_association.value = "Test"
 
-  context "with a integer field" do
-    should "have a integer value" do
-      field_association = build(:field_association, value: "1")
-      assert_equal(
-        "ActiveModel::Type::String",
-        field_association.class.attributes_to_define_after_schema_loads["value"][0].class.name
-      )
-      field_association.field = create(:field, field_type: "date")
-      assert_equal(
-        "ActiveRecord::Type::DateTime",
-        field_association.class.attributes_to_define_after_schema_loads["value"][0].class.name
-      )
-      field_association.field = create(:field, field_type: "integer")
-      assert_equal(
-        "ActiveRecord::ConnectionAdapters::SQLite3Adapter::SQLite3Integer",
-        field_association.class.attributes_to_define_after_schema_loads["value"][0].class.name
-      )
-      field_association.save!
+      assert @field_association.save
+      assert_equal "Test", @field_association.value
+    end
 
-      assert_equal "1", field_association.value
-      assert_equal 1, field_association.reload.value
-      assert field_association.value.is_a?(Integer)
+    should "not be valid with other type" do
+      @field_association.value = 42
+
+      assert_not @field_association.valid?
+      assert_equal({ value: ["must be a string"] }, @field_association.errors.messages)
+    end
+  end
+
+  context "with a date field" do
+    setup do
+      @field_association = build(:field_association)
+      @field_association.field = create(:field, field_type: "date")
+      travel_to Date.new(2004, 11, 24)
+    end
+
+    teardown do
+      travel_back
+    end
+
+    should "be valid with a date value" do
+      @field_association.value = 1.hour.ago
+
+      assert @field_association.save
+      assert_equal "2004-11-23 23:00:00 UTC", @field_association.value
+    end
+
+    should "not be valid with other type" do
+      @field_association.value = 1.hour.ago.to_s
+
+      assert_not @field_association.valid?
+      assert_equal({ value: ["must be a date"] }, @field_association.errors.messages)
     end
   end
 end

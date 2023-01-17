@@ -4,22 +4,38 @@ class FieldAssociation < ApplicationRecord
   belongs_to :field
   belongs_to :target, polymorphic: true
 
-  def field=(field)
-    super
-    set_value_type
-  end
-
-  attribute :value, :string
+  validates :value, presence: true
+  validate :value_type
 
   private
 
-  def set_value_type
-    return unless field_changed?
+  def value_type
+    return if field.nil?
+    return if value.nil?
 
-    # This can't work as it change the definition of the class, we need to create a Singleton class, which seems really hard to do.
-    mod = "::Attributes::#{field.field_type.capitalize}".constantize
-    self.class.include(mod) unless self.class.included_modules.include?(mod)
-  rescue NameError
-    raise "Unknown field type: #{field.field_type}"
+    case field.field_type
+    when "integer"
+      return if raw_value.is_a?(Integer)
+
+      errors.add(:value, "must be an integer")
+    when "string"
+      return if raw_value.is_a?(String)
+
+      errors.add(:value, "must be a string")
+    when "boolean"
+      return if raw_value.is_a?(TrueClass) || raw_value.is_a?(FalseClass)
+
+      errors.add(:value, "must be a boolean")
+    when "date"
+      return if raw_value.is_a?(DateTime) || raw_value.is_a?(Date) || raw_value.is_a?(ActiveSupport::TimeWithZone)
+
+      errors.add(:value, "must be a date")
+    else
+      raise "Unknown field type: #{field.field_type}"
+    end
+  end
+
+  def raw_value
+    read_attribute_before_type_cast(:value)
   end
 end
