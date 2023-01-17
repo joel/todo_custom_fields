@@ -19,6 +19,11 @@ class ItemsController < ApplicationController
   def create
     @item = @todo.items.new(item_params)
 
+    @collections = Collections.new(@todo)
+    @filter      = Memoization.new(@todo, {})
+
+    @filter.name ||= Obfuscator.new.encrypt({ name: @todo.items.first.name }.to_json) if @todo.items.any?
+
     respond_to do |format|
       if @item.save
 

@@ -1,7 +1,9 @@
 <%= turbo_stream.replace target="flash", partial: "layouts/flash" %>
 
 <%= turbo_stream.replace target="filter" do %>
-  <%= render partial: "todos/filter", locals: { filter: @filter, todo: @todo, collections: @collections } %>
+  <%= content_tag :div, id: "filter" do %>
+    <%= render partial: "todos/filter", locals: { filter: @filter, todo: @todo, collections: @collections } %>
+  <% end %>
 <% end %>
 
 <%= turbo_stream.replace target="new_item" do %>
