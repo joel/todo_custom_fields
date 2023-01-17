@@ -1,36 +1,34 @@
 <%= turbo_stream_from @todo %>
 
-<div class="mx-auto md:w-2/3 w-full flex">
-  <div class="mx-auto">
-    <% if notice.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-    <% end %>
+<div class="mx-auto">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+  <% end %>
 
-    <%= content_tag :div, id: "filter" do %>
-      <%= render partial: "filter", locals: { filter: @filter, todo: @todo, collections: @collections } %>
-    <% end %>
+  <%= content_tag :div, id: "filter" do %>
+    <%= render partial: "filter", locals: { filter: @filter, todo: @todo, collections: @collections } %>
+  <% end %>
 
-    <%= render @todo %>
+  <%= render @todo %>
 
-    <%= content_tag :div, id: "items" do %>
-      <%= render @filtered_items %>
-    <% end %>
+  <%= content_tag :div, id: "items" do %>
+    <%= render @filtered_items %>
+  <% end %>
 
-    <%= turbo_frame_tag "new_item", src: new_todo_item_path(@todo) %>
+  <%= turbo_frame_tag "new_item", src: new_todo_item_path(@todo) %>
 
-   <%= content_tag :div, id: "fields", class: "my-5 rounded-lg py-3 px-5 bg-gray-100" do %>
-      <strong class="block font-medium mb-1">Custom Fields:</strong>
-      <%= render @todo.fields %>
-    <% end %>
+  <%= content_tag :div, id: "fields", class: "my-5 rounded-lg py-3 px-5 bg-gray-100" do %>
+    <strong class="block font-medium mb-1">Custom Fields:</strong>
+    <%= render @todo.fields %>
+  <% end %>
 
-    <div class="rounded-lg py-3 px-5 bg-gray-100">
-      <%= turbo_frame_tag "new_field", src: new_todo_field_path(@todo) %>
-    </div>
-
-    <%= link_to 'Edit this todo', edit_todo_path(@todo), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <div class="inline-block ml-2">
-      <%= button_to 'Destroy this todo', todo_path(@todo), method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
-    </div>
-    <%= link_to 'Back to todos', todos_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+  <div class="rounded-lg py-3 px-5 bg-gray-100">
+    <%= turbo_frame_tag "new_field", src: new_todo_field_path(@todo) %>
   </div>
+
+  <%= link_to 'Edit this todo', edit_todo_path(@todo), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+  <div class="inline-block ml-2">
+    <%= button_to 'Destroy this todo', todo_path(@todo), method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+  </div>
+  <%= link_to 'Back to todos', todos_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
 </div>

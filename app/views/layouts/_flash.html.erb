@@ -1,4 +1,5 @@
-
-<div class="rounded-lg py-3 px-5 bg-gray-100 bg-blue-100 text-blue-700">
-  <%= "value" %>
-</div>
+<% flash.each do |key, value| %>
+  <div class="bg-blue-100 text-blue-700 p-4 rounded-md fixed top-5 right-5">
+    <%= value %>
+  </div>
+<% end %>
