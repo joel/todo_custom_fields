@@ -5,17 +5,23 @@ require "test_helper"
 class QueryBuilderTest < ActiveSupport::TestCase
   context "with custom fields" do
     setup do
-      todo           = create(:todo, name: "Grocery List")
-      field_quantity = create(:field, source: todo, name: "Quantity")
-      field_format   = create(:field, source: todo, name: "Format")
+      todo            = create(:todo, name: "Grocery List")
+      field_quantity  = create(:field, source: todo, name: "Quantity")
+      field_format    = create(:field, source: todo, name: "Format")
+      produced_date   = create(:field, source: todo, name: "Produced Date")
+      expiration_date = create(:field, source: todo, name: "Expiration Date")
 
       item = create(:item, todo:, name: "Milk")
       create(:field_association, target: item, field: field_quantity, value: "1")
       create(:field_association, target: item, field: field_format, value: "1 Litre")
+      create(:field_association, target: item, field: produced_date, value: 5.days.ago.utc.to_s)
+      create(:field_association, target: item, field: expiration_date, value: 2.weeks.from_now.utc.to_s)
 
       item = create(:item, todo:, name: "Wine")
       create(:field_association, target: item, field: field_quantity, value: "1")
       create(:field_association, target: item, field: field_format, value: "0.75 Litre")
+      create(:field_association, target: item, field: produced_date, value: 2.days.ago.utc.to_s)
+      create(:field_association, target: item, field: expiration_date, value: 2.weeks.from_now.utc.to_s)
 
       create(:item, todo:, name: "Bar")
       create(:item, todo: create(:todo), name: "Baz")
@@ -24,6 +30,25 @@ class QueryBuilderTest < ActiveSupport::TestCase
     end
 
     context "#query" do
+      should "find the fresh Wine item" do
+        constraints = [
+          { field_associations: { value: "1", fields: { identifier: "quantity" } } },
+          { field_associations: { value: "0.75 Litre", fields: { identifier: "format" } } },
+          [
+            "datetime(substr(field_associations.value, 1, 19)) > datetime(:date) AND fields.identifier = :identifier",
+            {
+              date: 3.days.ago.strftime("%Y-%m-%d %H:%M:%S"),
+              identifier: "produced_date"
+            }
+          ]
+        ]
+
+        assert_equal(
+          ["Wine"],
+          QueryBuilder.new(@collection).query(constraints).pluck(:name)
+        )
+      end
+
       should "find the milk item" do
         constraints = [
           { field_associations: { value: "1", fields: { identifier: "quantity" } } },
