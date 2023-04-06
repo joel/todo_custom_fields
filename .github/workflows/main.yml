@@ -3,7 +3,7 @@ name: Tests
 on: [ push ]
 
 env:
-  DEFAULT_RUBY: 3.2.0
+  DEFAULT_RUBY: 3.2.1
   CI: true
 
 jobs:
@@ -65,7 +65,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: [3.2.0, head, debug] #, jruby, truffleruby]
+        ruby: [3.2.1, head] #, jruby, truffleruby]
         gemfile: [Gemfile, gemfiles/rails_edge.gemfile]
 
     env:
