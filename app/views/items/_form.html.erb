@@ -16,14 +16,18 @@
     <%= form.text_field :name, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
-  <%= form.fields_for :field_associations, class: "contents" do |field_association_subform| %>
-    <div class="my-5">
-      <%= field_association_subform.label :value, (field_association_subform.object.field ? field_association_subform.object.field.name : "Unknown") %>
-      <%= field_association_subform.text_field :value, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-      <% if field_association_subform.object.field %>
-        <%= field_association_subform.text_field :field_id, class: field_association_subform.object.field.id, hidden: true %>
-      <% end %>
-    </div>
+  <% item.todo.fields.each do |field| %>
+    <% field_association = item.field_associations.where(field: field).take %>
+    <% field_association ||= item.field_associations.build(field: field)%>
+    <%= form.fields_for field_association, class: "contents" do |field_association_subform| %>
+      <div class="my-5">
+        <%= field_association_subform.label :value, (field_association_subform.object.field ? field_association_subform.object.field.name : "Unknown") %>
+        <%= field_association_subform.text_field :value, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+        <% if field_association_subform.object.field %>
+          <%= field_association_subform.text_field :field_id, class: field_association_subform.object.field.id, hidden: true %>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 
   <div class="inline">
