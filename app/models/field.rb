@@ -3,7 +3,7 @@
 class Field < ApplicationRecord
   broadcasts_to :source
 
-  validates :name, presence: true, length: { maximum: 255 }, format: { with: /\A[a-zA-Z_]+\z/ }
+  validates :name, presence: true, length: { maximum: 255 }, format: { with: /\A[a-zA-Z_\s]+\z/ }
 
   belongs_to :source, polymorphic: true, optional: true
 
