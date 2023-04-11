@@ -18,7 +18,7 @@ module DbTypeAdapters
     attr_reader :field_type, :value
 
     def type_converter
-      @type_converter ||= "DbTypeAdapters::#{field_type.classify}".constantize.new(value)
+      @type_converter ||= "DbTypeAdapters::Sqlite::#{field_type.classify}".constantize.new(value)
     end
   end
 end
