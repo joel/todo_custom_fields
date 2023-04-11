@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
-module QueryFragments
-  class QueryFragmentDatetime
+module DbTypeAdapters
+  class Datetime < DbTypeAdapterBase
     def initialize(value)
+      super()
+
       @value = value
     end
 
@@ -11,7 +13,13 @@ module QueryFragments
     end
 
     def target_placeholder
-      "datetime('#{@value.strftime("%Y-%m-%d %H:%M:%S")}')"
+      "datetime('#{value}')"
+    end
+
+    private
+
+    def value
+      @value.strftime("%Y-%m-%d %H:%M:%S")
     end
   end
 end

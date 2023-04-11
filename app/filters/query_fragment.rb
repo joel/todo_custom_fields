@@ -2,19 +2,16 @@
 
 class QueryFragment
   def initialize(options)
-    @identifier     = options.fetch(:identifier)
-    @value          = options.fetch(:value)
-    @field_type     = options.fetch(:field_type)
-    @query_template = options.fetch(:query)
+    @identifier      = options.fetch(:identifier)
+    @query_template  = options.fetch(:query)
+    @db_type_adapter = DbTypeAdapter.new(options.fetch(:field_type), options.fetch(:value))
   end
 
   def query
-    query = query_template
-
-    querifier = "QueryFragments::QueryFragment#{field_type.classify}".constantize.new(value)
-
     [
-      query.gsub(":db_placeholder", querifier.db_placeholder).gsub(":target_placeholder", querifier.target_placeholder),
+      query_template
+        .gsub(":db_placeholder", db_type_adapter.db_placeholder)
+        .gsub(":target_placeholder", db_type_adapter.target_placeholder),
       {
         identifier:
       }
@@ -23,5 +20,5 @@ class QueryFragment
 
   private
 
-  attr_reader :identifier, :value, :field_type, :query_template
+  attr_reader :identifier, :query_template, :db_type_adapter
 end
