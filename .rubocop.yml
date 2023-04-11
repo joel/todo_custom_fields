@@ -13,6 +13,7 @@ AllCops:
   Exclude:
     - 'gemfiles/vendor/**/*'
     - 'vendor/bundle/**/*'
+    - 'doc/**/*'
 
 Style/StringLiterals:
   Enabled: true
