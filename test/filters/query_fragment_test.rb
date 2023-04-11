@@ -4,6 +4,14 @@ require "test_helper"
 
 class QueryFragmentTest < ActiveSupport::TestCase
   context "with custom fields" do
+    setup do
+      travel_to Time.zone.local(2004, 11, 24, 1, 4, 44)
+    end
+
+    teardown do
+      travel_back
+    end
+
     should "find the fresh Wine item" do
       query_fragment = QueryFragment.new(
         {
@@ -15,14 +23,12 @@ class QueryFragmentTest < ActiveSupport::TestCase
       )
 
       assert_equal(
-        query_fragment.query,
         [
-          "datetime(substr(field_associations.value, 1, 19)) > datetime(:datetime) AND fields.identifier = :identifier",
+          "datetime(substr(field_associations.value, 1, 19)) > datetime('2004-11-21 01:04:44') AND fields.identifier = :identifier",
           {
-            datetime: 3.days.ago.strftime("%Y-%m-%d %H:%M:%S"),
             identifier: "produced_date"
           }
-        ]
+        ], query_fragment.query
       )
     end
   end

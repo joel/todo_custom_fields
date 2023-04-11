@@ -34,13 +34,14 @@ class QueryBuilderTest < ActiveSupport::TestCase
         constraints = [
           { field_associations: { value: "1", fields: { identifier: "quantity" } } },
           { field_associations: { value: "0.75 Litre", fields: { identifier: "format" } } },
-          [
-            "datetime(substr(field_associations.value, 1, 19)) > datetime(:date) AND fields.identifier = :identifier",
+          QueryFragment.new(
             {
-              date: 3.days.ago.strftime("%Y-%m-%d %H:%M:%S"),
-              identifier: "produced_date"
+              identifier: "produced_date",
+              value: 3.days.ago,
+              field_type: "datetime",
+              query: ":db_placeholder > :target_placeholder AND fields.identifier = :identifier"
             }
-          ]
+          ).query
         ]
 
         assert_equal(

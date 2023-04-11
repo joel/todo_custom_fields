@@ -11,24 +11,17 @@ class QueryFragment
   def query
     query = query_template
 
+    querifier = "QueryFragments::QueryFragment#{field_type.classify}".constantize.new(value)
+
     [
-      query.gsub(":db_placeholder", db_placeholder).gsub(":target_placeholder", target_placeholder),
+      query.gsub(":db_placeholder", querifier.db_placeholder).gsub(":target_placeholder", querifier.target_placeholder),
       {
-        datetime: value.strftime("%Y-%m-%d %H:%M:%S"),
         identifier:
       }
     ]
   end
 
   private
-
-  def db_placeholder
-    "datetime(substr(field_associations.value, 1, 19))"
-  end
-
-  def target_placeholder
-    "datetime(:datetime)"
-  end
 
   attr_reader :identifier, :value, :field_type, :query_template
 end
