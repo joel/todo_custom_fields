@@ -7,14 +7,18 @@ require_relative "config/application"
 
 Rails.application.load_tasks
 
+task default: %i[test]
+
 begin
   require "rubocop/rake_task"
+
+  RuboCop::RakeTask.new(:rubocop) do |task|
+    task.options = ["-A"] # auto_correct
+  end
+
+  task default: %i[test rubocop]
 rescue LoadError
   puts "RuboCop not available."
 end
 
-RuboCop::RakeTask.new(:rubocop) do |task|
-  task.options = ["-A"] # auto_correct
-end
-
-task default: %i[test rubocop]
+# task default: %i[test]
